@@ -38,4 +38,20 @@ public class EmployeeRestController {
         Employee dbEmployee = employeeService.save(employee);
         return dbEmployee;
     }
+
+    @PutMapping("/employees")
+    public Employee updateEmployee(@RequestBody Employee employee) {
+        Employee dbEmployee = employeeService.save(employee);
+        return dbEmployee;
+    }
+
+    @DeleteMapping("/employees/{employeeId}")
+    public String deleteEmployee(@PathVariable int employeeId) {
+        Employee employee = employeeService.findById(employeeId);
+        if (employee == null) {
+            throw new RuntimeException("Employee with id does not exist - " + employeeId);
+        }
+        employeeService.deleteById(employeeId);
+        return "Deleted employee";
+    }
 }
