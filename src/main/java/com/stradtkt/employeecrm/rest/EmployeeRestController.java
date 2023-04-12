@@ -3,9 +3,8 @@ package com.stradtkt.employeecrm.rest;
 
 import com.stradtkt.employeecrm.dao.EmployeeDAO;
 import com.stradtkt.employeecrm.entity.Employee;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.stradtkt.employeecrm.service.EmployeeService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -13,14 +12,30 @@ import java.util.List;
 @RequestMapping("/api")
 public class EmployeeRestController {
 
-    private EmployeeDAO employeeDAO;
+    private EmployeeService employeeService;
 
-    public EmployeeRestController(EmployeeDAO employeeDAO1) {
-        employeeDAO = employeeDAO1;
+    public EmployeeRestController(EmployeeService employeeService1) {
+        employeeService = employeeService1;
     }
 
     @GetMapping("/employees")
     public List<Employee> findAll() {
-        return employeeDAO.findAll();
+        return employeeService.findAll();
+    }
+
+    @GetMapping("/employees/{employeeId}")
+    public Employee getEmployee(@PathVariable int employeeId) {
+        Employee employee = employeeService.findById(employeeId);
+        if(employee == null) {
+            throw new RuntimeException("Employee id not found - " + employeeId);
+        }
+        return employee;
+    }
+
+    @PostMapping("/employees")
+    public Employee addEmployee(@RequestBody Employee employee) {
+        employee.setId(0);
+        Employee dbEmployee = employeeService.save(employee);
+        return dbEmployee;
     }
 }

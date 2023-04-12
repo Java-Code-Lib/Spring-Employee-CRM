@@ -1,10 +1,11 @@
-package com.stradtkt.employeecrm.dao;
+package com.stradtkt.employeecrm.service;
 
 import com.stradtkt.employeecrm.entity.Employee;
 
 import java.util.List;
 
-public interface EmployeeDAO {
+public interface EmployeeService {
+
     List<Employee> findAll();
     Employee findById(int id);
     Employee save(Employee employee);
